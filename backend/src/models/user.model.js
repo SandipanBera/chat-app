@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken";
 const profileSchema = new Schema({
   url: String,
@@ -28,11 +29,17 @@ const userSchema = new Schema(
       trim: true,
       require: [true, "Please provide your email"],
     },
+    gender: {
+      type: String,
+      require: true,
+      enum: ["male", "female"],
+    },
     profileImage: {
       type: profileSchema,
     },
     password: {
       type: String,
+      minLength: 6,
       required: [true, "Password is required"],
     },
     refreshtoken: {
@@ -47,10 +54,10 @@ userSchema.pre("save", async function (next) {
   next();
 });
 // Method to compare and validate the password
-userSchema.methods.comparePassword = async (password) => {
+userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
-userSchema.method.genetrateAccesstoken = async () => {
+userSchema.methods.genetrateAccesstoken = function () {
   return jwt.sign(
     {
       _id: this._id,
@@ -64,7 +71,7 @@ userSchema.method.genetrateAccesstoken = async () => {
     }
   );
 };
-userSchema.method.genetrateRefreshtoken = async () => {
+userSchema.methods.genetrateRefreshtoken = function(){
   return jwt.sign({ _id: this._id }, process.env.REFRESH_TOKEN_KEY, {
     expiresIn: process.env.REFRESH_TOKEN_EXPIRE,
   });
