@@ -35,11 +35,11 @@ const registerUser = asyncHandler(async (req, res) => {
   const existedUser = await User.findOne({
     $or: [{ userName }, { email }],
   });
-  console.log("successfull 2");
+
   if (existedUser) {
     throw new apiError(409, "username or email already registered");
   }
-  console.log("successfull 1");
+
   const profilePicLocalPath = req.file?.path;
   const profileImage = "";
   if (profilePicLocalPath) {
@@ -104,5 +104,18 @@ const loginUser = asyncHandler(async (req, res) => {
     .cookie("refresh_token", refreshToken, option)
     .json(new apiResponse("User succefully logged in", 200, logedInUser));
 });
+// @desc Logout / clear cookie
+const logoutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+   {$set: { refreshtoken: "" }},
+    { new: true }
+  ).select("-password -refreshtoken");
+  return res
+    .status(200)
+    .clearCookie("access_token", option)
+    .clearCookie("refresh_token", option)
+    .json(new apiResponse("User successfully logged out", 200, {}));
+});
 
-export { registerUser, loginUser };
+export { registerUser, loginUser, logoutUser };
