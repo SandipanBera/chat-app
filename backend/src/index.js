@@ -1,18 +1,33 @@
-import app from "./app.js";
+import connectDB from "./db//index.js";
 import dotenv from "dotenv";
-import connectDB from "./db/index.js";
+import app  from "./app.js";
+// Load environment variables from .env file if it exists.
 
 dotenv.config(
-    {
-        path: "./.env"
-    }
+  // Specify the path to .env file.
+  { path: "./.env" }
 );
+connectDB()
+  /**
+   * Starts the server and listens on the specified port.
+   * If the `process.env.PORT` variable is not set, the server will listen on port 4000.
+   * @returns {void}
+   */
+  .then(() => {
+    app.listen(process.env.PORT || 4000, () =>
+      console.log("Server started on port " + process.env.PORT)
+    );
 
-const port = process.env.PORT || 3000
-connectDB().then(()=>{app.listen(port, () => console.log("Server is running on port " + port))
-    app.on('error', (error) => {
-        console.log("Error occurred", error);
-        throw error
-    })}
-).catch((err)=>console.log(err));
+    /**
+     * Handles the error event emitted by the app.
+     * Logs the error message and throws the error.
+     * @param {Error} error - The error object emitted by the app.
+     * @returns {void}
+     */
+    app.on("error", (error) => {
+      console.log("database not connected", error);
+      throw error;
+    });
+  })
 
+  .catch((error) => console.log(error));

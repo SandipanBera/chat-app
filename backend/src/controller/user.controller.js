@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import cloudinaryUpload from "../utils/cloudinary.js";
+import jwt from "jsonwebtoken";
 
 const generateAccesstokenAndRefreshtoken = async (userId) => {
   const user = await User.findById(userId);
@@ -108,7 +109,7 @@ const loginUser = asyncHandler(async (req, res) => {
 const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
-   {$set: { refreshtoken: "" }},
+    { $set: { refreshtoken: "" } },
     { new: true }
   ).select("-password -refreshtoken");
   return res
@@ -117,5 +118,130 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("refresh_token", option)
     .json(new apiResponse("User successfully logged out", 200, {}));
 });
+const currentUser = asyncHandler(async (req, res) => {
+  return res
+    .status(200)
+    .json(new apiResponse("Successfully fetched user", 200, req.user));
+});
+const refreshToken = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  // Check if user exists
+  if (!user) {
+    throw new apiError(400, "No user found with given credentials");
+  }
+  // check if the refresh token is valid
+  const isValidRefreshToken = jwt.verify(
+    req.cookies.refresh_token,
+    process.env.REFRESH_TOKEN_KEY
+  );
+  if (!isValidRefreshToken) {
+    throw new apiError(401, "not a valid token");
+  }
+  // check save token from database matches incoming token
+  if (req.cookies.refresh_token !== user.refreshtoken) {
+    throw new apiError(401, "Authentication error");
+  }
+  // Generate new tokens and save in database
+  const { accessToken, refreshToken } =
+    await generateAccesstokenAndRefreshtoken(user._id);
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    { $set: { refreshtoken: refreshToken } },
+    { new: true }
+  ).select("-password");
+  return res
+    .status(200)
+    .cookie("access_token", accessToken, option)
+    .cookie("refresh_token", refreshToken, option)
+    .json(new apiResponse("Successfully refresh token", 200, updatedUser));
+});
+const changePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+  // Check for password length
+  if (
+    oldPassword.length < 6 ||
+    confirmPassword.length < 6 ||
+    newPassword.length < 6
+  ) {
+    throw new apiError(400, "Password should be at least 6 characters long");
+  }
+  // Checking if both (old and confirm) passwords are same or not
+  if (newPassword !== confirmPassword) {
+    throw new apiError(400, "Both Password must be same!");
+  }
+  const user = await User.findById(req.user._id);
+  // compare old password to hashed password stored in db
+  const verifyPassword = await user.comparePassword(oldPassword);
+  if (!verifyPassword) {
+    throw new apiError(401, "Invalid Old Password");
+  }
+  user.password = newPassword;
+  await user.save();
+  const updatedUser = await User.findById(req.user._id).select(
+    "-password -refreshtoken"
+  );
+  res
+    .status(200)
+    .json(
+      new apiResponse(
+        "Password has been changed successfully!",
+        200,
+        updatedUser
+      )
+    );
+});
+const updateUserDetails = asyncHandler(async (req, res) => {
+  const { Fullname, Username, Email, Gender } = req.body;
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        fullName: Fullname || req.user.fullName,
+        userName: Username || req.user.userName,
+        email: Email || req.user.email,
+        gender: Gender || req.user.gender,
+      },
+    },
+    { new: true }
+  ).select("-password  -refreshtoken");
+  if (!user) {
+    throw new apiError(500, "Server Error");
+  }
+  return res
+    .status(200)
+    .json(new apiResponse("Profile Updated Successfully.", 200, user));
+});
+const changeAvatar = asyncHandler(async (req, res) => {
+  const localImagePath = req.file?.path;
+  const user = await User.findById(req.user._id).select(
+    "-password -refreshtoken"
+  );
+  if (localImagePath) {
+    const imageUrl = await cloudinaryUpload(localImagePath);
+    user.profileImage.url = imageUrl.url;
+    user.profileImage.public_id = imageUrl.public_id;
+    await user.save({ validateBeforeSave: false });
+    const updatedUser = await User.findById(req.user._id).select(
+      "-password -refreshtoken"
+    );
+    return res
+      .status(200)
+      .json(
+        new apiResponse("Successfully updated user profile", 200, updatedUser)
+      );
+  }
+  return res
+    .status(200)
+    .json(new apiResponse("Successfully updated user profile", 200, user));
+});
 
-export { registerUser, loginUser, logoutUser };
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  currentUser,
+  refreshToken,
+  changePassword,
+  updateUserDetails,
+  changeAvatar,
+};
