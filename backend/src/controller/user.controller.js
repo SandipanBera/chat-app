@@ -234,6 +234,11 @@ const changeAvatar = asyncHandler(async (req, res) => {
     .status(200)
     .json(new apiResponse("Successfully updated user profile", 200, user));
 });
+const getUsers = asyncHandler(async (req, res) => {
+  const loggedInUser = req.user._id;
+  const users = await User.find({ _id: { $ne: loggedInUser } }).select('-password');
+  return res.status(200).json(new apiResponse('Users successfully fetched', 200, users))
+})
 
 export {
   registerUser,
@@ -244,4 +249,5 @@ export {
   changePassword,
   updateUserDetails,
   changeAvatar,
+  getUsers,
 };
