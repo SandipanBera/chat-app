@@ -3,12 +3,15 @@
 @tailwind utilities;
 
 body{
-background: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url("/bg.png");
-background-repeat: no-repeat;
-background-position: center ;
-background-size: cover;
+  background: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)), url("/bg.jpg"); 
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center ;
+  background-attachment:fixed ;
 
 }
+
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
