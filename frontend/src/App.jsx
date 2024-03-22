@@ -1,11 +1,17 @@
 import { Outlet } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import Navbar from "./components/navbar";
+import Container from "./components/container/container";
 
 function App() {
   return (
-      <div className="container min-h-screen p-4 flex justify-center items-center">
+    <div className="min-w-full min-h-screen">
+      <Navbar />
+      <Container>
         <Outlet />
-      </div>
-
+      </Container>
+      <Toaster />
+    </div>
   );
 }
 

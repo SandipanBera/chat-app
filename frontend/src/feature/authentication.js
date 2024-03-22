@@ -1,5 +1,3 @@
-
-
 class Authentication {
   async registerUser(
     {
@@ -20,7 +18,6 @@ class Authentication {
       formdata.append("email", email);
       formdata.append("gender", gender);
       formdata.append("profileImage", new File([profileimage], imageName));
-
       formdata.append("password", password);
       formdata.append("confirmPassword", confirmPassword);
      const res= await (
@@ -33,7 +30,7 @@ class Authentication {
           body: formdata,
         })
       ).json();
-      console.log(res.statusCode);
+      // after successful registration login  user with the password and username
       if (res.statusCode===200) {
         const response = await this.signIn({username:userName,password})      
         return response;
@@ -50,6 +47,7 @@ class Authentication {
       return await (
         await fetch("http://localhost:8080/api/v1/users/signin", {
           method: "POST",
+          credentials:"include",
           headers: {
             accept: "application/json",
             "Content-Type": "application/json",
@@ -57,6 +55,22 @@ class Authentication {
           body: JSON.stringify({ username, password }),
         })
       ).json();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async logout() {
+    try {
+      return await(await fetch("http://localhost:8080/api/v1/users/signout", {
+        method: "POST",
+        credentials:'include',
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        }
+      
+        
+      })).json()
     } catch (error) {
       console.log(error);
     }

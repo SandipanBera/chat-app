@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./page/home.jsx";
-import SignUp from "./page/signup.jsx";
-import SignIn from "./page/signin.jsx";
+import { Provider } from "react-redux";
+import { store } from "./store/store.js";
+import { Home, Landing, SignIn, SignUp ,ChangePassword} from "./page/index.js";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <Landing />,
       },
       {
         path: "sign-up",
@@ -22,7 +22,15 @@ const router = createBrowserRouter([
       },
       {
         path: "sign-in",
-        element:<SignIn />
+        element: <SignIn />,
+      },
+      {
+        path: "home",
+        element: <Home />,
+      },
+      {
+        path: "changePassword",
+        element:<ChangePassword />
       }
     ],
   },
@@ -30,8 +38,11 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router}>
-      <App />
-    </RouterProvider>
+    <Provider store={store}>
+      {" "}
+      <RouterProvider router={router}>
+        <App />
+      </RouterProvider>{" "}
+    </Provider>
   </React.StrictMode>
 );

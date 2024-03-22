@@ -1,11 +1,10 @@
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import auth from "../feature/authentication";
+import toast from "react-hot-toast";
+import auth from "../../feature/authentication";
 function SignUp() {
-  const [error, setError] = useState("")
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -14,41 +13,43 @@ function SignUp() {
   } = useForm();
   const currPassword = watch("password", "");
   const onSubmit = (data) => {
-    console.log(data)
-    auth.registerUser(data).then(response => {
-      if (response.statusCode!==200) {
-        setError(response.message)
-        console.log(response.message);
-      } else {
-        navigate('/')
-         console.log(response)
-      }
-     
-    }).catch(error => {
-      console.log(error)
-    
-    })
+    console.log(data);
+    auth
+      .registerUser(data)
+      .then((response) => {
+        if (response.statusCode !== 200) {
+          toast.error(response.message);
+        } else {
+          toast.success("Registered Successfully!");
+          navigate("/main");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <section className="w-1/4 bg-[rgba(47,_163,_177,_0.2)] rounded-[16px] [box-shadow:0_4px_30px_rgba(0,_0,_0,_0.1)] backdrop-filter backdrop-blur-[5px] border-[1px] border-[rgba(47,163,177,0.3)]">
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-16">
         <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
-          <h2 className="text-center text-2xl font-bold leading-tight text-black">
-            Sign up to create account
+        <div className="flex flex-row justify-center">
+               <h2 className="text-center inline-block text-2xl font-bold leading-tight text-black">
+            Sign Up to
           </h2>
-          <p className="mt-2 text-center text-base text-blue-600">
+          &nbsp;<span className="text-2xl font-bold leading-tight text-slate-600"> Konnekt</span>
+          </div>
+          <p className="mt-2 text-center text-base  text-slate-600">
             Already have an account?{" "}
             <Link
               to={"/sign-in"}
               className="font-medium text-black transition-all duration-200 hover:underline"
             >
               Sign In
-            </Link>          
+            </Link>
           </p>
-          {error && <p className="mt-2 text-center text-base text-blue-600">{error}</p>}
           <form className="mt-8" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-5">
-            <div>
+              <div>
                 <label
                   htmlFor="fullname"
                   className="text-base font-medium text-gray-900"
@@ -134,6 +135,7 @@ function SignUp() {
                         message: "At least 6 characters are needed.",
                       },
                     })}
+                    //optional for strong password validation
                     //   , pattern: {
                     //     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
                     //     message:"The password must contain at least one uppercase letter, one lowercase letter,and one digit"
@@ -160,9 +162,8 @@ function SignUp() {
                     id="confirm password"
                     {...register("confirmPassword", {
                       required: true,
-                      validate: (value) => 
-                        value ==currPassword || "Passwords do not match."
-                      ,
+                      validate: (value) =>
+                        value == currPassword || "Passwords do not match.",
                     })}
                   ></input>
                   {errors.confirmPassword && (
@@ -200,7 +201,7 @@ function SignUp() {
               <div>
                 <button
                   type="submit"
-                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  className="btn glass inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 leading-7 text-white"
                 >
                   Create Account <ArrowRight className="ml-2" size={16} />
                 </button>
