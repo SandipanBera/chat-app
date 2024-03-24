@@ -5,13 +5,15 @@ import Container from "./components/container/container";
 
 function App() {
   return (
-    <div className="min-w-full min-h-screen">
-      <Navbar />
+   
+     <div className="w-full min-h-screen  overflow-hidden">
+    <Navbar />
       <Container>
         <Outlet />
       </Container>
       <Toaster />
-    </div>
+    </div> 
+    
   );
 }
 

@@ -1,16 +1,39 @@
-import auth from "../feature/authentication";
-
+import { TypeAnimation } from "react-type-animation";
 function Landing() {
-  const handleClick = () => {
-    auth.registerUser("test3", "test3", "test3@gmail.com",'female', "123456","123456").then(response=>console.log(response)).catch(error=>console.log(error))
-    // auth.signIn("sand",'123456').then(response=>console.log(response)).catch(error=>console.log(error))
-  };
   return (
-    <>
-      <button className="btn glass text-violet-500 ml-5" onClick={handleClick}>
-      Api Call
-      </button>  
-    </>
+    <div className="flex flex-col gap-2 ">
+      <div>
+        <span className="font-bold lg:text-6xl sm:text-4xl text-2xl ">
+          Welcome to
+        </span>
+        &nbsp;
+        <TypeAnimation
+          sequence={["Konnekt", 2000, "", 2000]}
+          wrapper="span"
+          speed={30}
+          style={{
+            fontSize: "60px",
+            display: "inline-block",
+            color: "#B65693",
+        
+          }}
+          repeat={Infinity}
+        />
+      </div>
+
+      <TypeAnimation
+        sequence={[
+          "We konnekt pepole to pepole",
+          2000,
+          "Start your journey with konnekt",
+          2000,
+        ]}
+        wrapper="span"
+        speed={50}
+        style={{ fontSize: "20px", display: "inline-block", color: "#B65693" }}
+        repeat={Infinity}
+      />
+    </div>
   );
 }
 

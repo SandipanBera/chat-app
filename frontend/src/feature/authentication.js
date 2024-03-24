@@ -20,7 +20,7 @@ class Authentication {
       formdata.append("profileImage", new File([profileimage], imageName));
       formdata.append("password", password);
       formdata.append("confirmPassword", confirmPassword);
-     const res= await (
+      const res = await (
         await fetch("http://localhost:8080/api/v1/users/signup", {
           method: "POST",
           credentials: "include",
@@ -31,23 +31,20 @@ class Authentication {
         })
       ).json();
       // after successful registration login  user with the password and username
-      if (res.statusCode===200) {
-        const response = await this.signIn({username:userName,password})      
+      if (res.statusCode === 200) {
+        const response = await this.signIn({ username: userName, password });
         return response;
-        
       }
-  
     } catch (error) {
-     console.log(error);
-   
+      console.log(error);
     }
   }
-  async signIn({username, password}) {
+  async signIn({ username, password }) {
     try {
       return await (
         await fetch("http://localhost:8080/api/v1/users/signin", {
           method: "POST",
-          credentials:"include",
+          credentials: "include",
           headers: {
             accept: "application/json",
             "Content-Type": "application/json",
@@ -61,16 +58,32 @@ class Authentication {
   }
   async logout() {
     try {
-      return await(await fetch("http://localhost:8080/api/v1/users/signout", {
-        method: "POST",
-        credentials:'include',
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/x-www-form-urlencoded",
-        }
-      
-        
-      })).json()
+      return await (
+        await fetch("http://localhost:8080/api/v1/users/signout", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+      ).json();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getAllUser() {
+    try {
+      return await (
+        await fetch("http://localhost:8080/api/v1/users", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+      ).json();
     } catch (error) {
       console.log(error);
     }
