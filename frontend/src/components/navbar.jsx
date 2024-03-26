@@ -5,6 +5,8 @@ import { authentication } from "../slice/authSlice";
 import toast from "react-hot-toast";
 function Navbar() {
   const isAuthenticate = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.user)
+  console.log(user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -45,7 +47,7 @@ function Navbar() {
                 <div className="w-10 rounded-full">
                   <img
                     alt="Tailwind CSS Navbar component"
-                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                    src={user.userData?.profileImage?.url}
                   />
                 </div>
               </div>

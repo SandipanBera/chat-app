@@ -72,6 +72,22 @@ class Authentication {
       console.log(error);
     }
   }
+  async currentUser() {
+    try {
+      return await (
+        await fetch("http://localhost:8080/api/v1/users/currentUser", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+      ).json();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async getAllUser() {
     try {
       return await (
