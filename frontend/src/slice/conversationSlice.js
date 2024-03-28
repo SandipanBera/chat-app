@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-    conversation: null,
+    conversation: [],
     currentConversation: null
 }
 const conversationSlice = createSlice({
@@ -8,7 +8,7 @@ const conversationSlice = createSlice({
     initialState,
     reducers: {
         setConversation: (state, action) => {
-            state.userData=action.payload;
+            state.conversation=[...state.conversation,action.payload];
         },
         setCurrentConversation: (state, action) => {
             state.currentConversation = action.payload;

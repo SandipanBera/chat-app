@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import Navbar from "./components/navbar";
 import { useEffect, useState } from "react";
-import auth from "./feature/authentication";
+import auth from "./api-call/authentication";
 import { authentication } from "./slice/authSlice";
 import { setUserdata } from "./slice/userSlice";
 

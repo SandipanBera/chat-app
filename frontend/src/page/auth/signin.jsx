@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import auth from "../../feature/authentication";
+import auth from "../../api-call/authentication";
 import { ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";

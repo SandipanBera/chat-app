@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
-import auth from "../feature/authentication";
+import auth from "../api-call/authentication";
 import Container from "../components/container/container";
 import { Laugh, Paperclip, Send } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { setCurrentConversation } from "../slice/conversationSlice";
 import Conversation from "../components/conversation";
+import useSendMessage from "../hooks/SendMessage";
 
 function Home() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
-  const [div1, setDiv1] = useState("hidden");
-  const [div2, setDiv2] = useState("grid");
- const dispatch=useDispatch()
+  const [visible, setVisible] = useState(false);
+  const[message,setMessage]=useState('')
+  const SendMessage=useSendMessage()
+  // Dispatcher for actions
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setLoading(true);
@@ -26,15 +29,17 @@ function Home() {
         setLoading(false);
       });
   }, []);
-  const clickHandler = (user) => {  
-    dispatch(setCurrentConversation(user._id))
-    setDiv1("grid");
-    setDiv2("hidden");
+  const clickHandler = (user) => {
+    dispatch(setCurrentConversation(user._id));
+    setVisible(true);
     setName(user.userName);
     setImage(user.profileImage.url);
-
-
   };
+  const sendMessage = () => {
+    console.log(message);
+    SendMessage(message)
+   setMessage( "" )
+  }
   return loading ? (
     <span className="loading loading-infinity loading-lg  text-red-400 absolute top-1/2 left-1/2"></span>
   ) : (
@@ -69,16 +74,14 @@ function Home() {
                 <Conversation
                   key={user._id}
                   user={user}
-                  clickHandler ={clickHandler}
+                  clickHandler={clickHandler}
                 />
-                  
-                
               ))}
             </ul>
           </div>
         </div>
         <div className=" col-span-7 border-l border-cyan-200 ">
-          <div className={`${div1} grid-rows-12 `}>
+          <div className={`${visible ? "grid" : "hidden"} grid-rows-12 `}>
             <div
               className=" row-span-1 h-full w-full bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 rounded-tr-[16px]
 "
@@ -106,15 +109,19 @@ function Home() {
                 <input
                   type="text"
                   placeholder="Type here"
-                  className="input input-ghost w-full max-w-xs"
+                    className="input input-ghost w-full max-w-xs"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                 />
               </div>
               <div className=" col-span-1 flex justify-center items-center">
-                <Send />
+                <Send onClick={sendMessage} />
               </div>
             </div>
           </div>
-          <div className={`${div2} h-full grid-cols-1 place-items-center`}>
+          <div
+            className={`${visible ? "hidden" : "grid"} h-full grid-cols-1 place-items-center`}
+          >
             <div className=" flex flex-col justify-center items-center gap-1 w-4/5 h-1/2">
               <img src="robot.png" alt="" className="h-1/2 w-1/2" />
               <p className="text-l font-semibold">
