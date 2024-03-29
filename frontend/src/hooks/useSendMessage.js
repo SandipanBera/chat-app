@@ -5,7 +5,9 @@ import { setConversation } from "../slice/conversationSlice";
 
 function useSendMessage() {
   const dispatch = useDispatch();
-  const id = useSelector((state) => state.conversations.currentConversation);
+  const selector = useSelector((state) => state.conversations);
+  const id = selector.currentConversation?._id;
+
   function sendMessage(reciveMessage) {
     message
       .sendMessage(id, reciveMessage)
@@ -13,7 +15,7 @@ function useSendMessage() {
         if (res.statusCode !== 200) {
           throw res;
         }
-        dispatch(setConversation(reciveMessage));
+        dispatch(setConversation([...selector.conversation,res.data]));
       })
       .catch((error) => toast.error(error.message));
   }

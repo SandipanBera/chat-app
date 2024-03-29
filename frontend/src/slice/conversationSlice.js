@@ -8,8 +8,9 @@ const conversationSlice = createSlice({
     initialState,
     reducers: {
         setConversation: (state, action) => {
-            state.conversation=[...state.conversation,action.payload];
+            state.conversation=[...action.payload];
         },
+       
         setCurrentConversation: (state, action) => {
             state.currentConversation = action.payload;
          }

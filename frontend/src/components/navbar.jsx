@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import auth from "../api-call/authentication";
 import { authentication } from "../slice/authSlice";
 import toast from "react-hot-toast";
+import { Userdata } from "../slice/userSlice";
 function Navbar() {
   const isAuthenticate = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
@@ -12,6 +13,7 @@ function Navbar() {
     auth.logout().then((response) => {
       if (response?.statusCode === 200) {
         dispatch(authentication(false));
+        dispatch(Userdata(null));
         toast.success(response.message);
         navigate("/");
       } else {

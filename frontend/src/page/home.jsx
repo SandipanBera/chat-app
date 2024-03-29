@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import auth from "../api-call/authentication";
 import Container from "../components/container/container";
 import { Laugh, Paperclip, Send } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentConversation } from "../slice/conversationSlice";
 import Conversation from "../components/conversation";
-import useSendMessage from "../hooks/SendMessage";
+import useSendMessage from "../hooks/useSendMessage";
+import { Userdata } from "../slice/userSlice";
+import useGetMessage from "../hooks/useGetMessage";
+import MessageSkeleton from "../components/skeletons/messageSkeleton";
 
 function Home() {
   const [users, setUsers] = useState([]);
@@ -13,11 +16,13 @@ function Home() {
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [visible, setVisible] = useState(false);
-  const[message,setMessage]=useState('')
-  const SendMessage=useSendMessage()
+  const [message, setMessage] = useState("");
+  const sendMessage = useSendMessage();
+  const getMessages = useGetMessage();
   // Dispatcher for actions
   const dispatch = useDispatch();
-
+  const messages = useSelector((state) => state.conversations.conversation);
+  console.log(messages);
   useEffect(() => {
     setLoading(true);
     auth
@@ -29,17 +34,34 @@ function Home() {
         setLoading(false);
       });
   }, []);
+  useEffect(() => {
+    auth
+      .currentUser()
+      .then((user) => {
+        setLoading(true);
+        if (user.statusCode === 200) {
+          dispatch(Userdata(user.data));
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [dispatch]);
+
   const clickHandler = (user) => {
-    dispatch(setCurrentConversation(user._id));
+    setLoading(true)
+    dispatch(setCurrentConversation(user));
     setVisible(true);
     setName(user.userName);
     setImage(user.profileImage.url);
+    getMessages(user._id);
+    setLoading(false)
   };
-  const sendMessage = () => {
-    console.log(message);
-    SendMessage(message)
-   setMessage( "" )
-  }
+  const handleSendMessage = () => {
+    if (!message) {
+      return
+    }
+    sendMessage(message);
+    setMessage("");
+  };
   return loading ? (
     <span className="loading loading-infinity loading-lg  text-red-400 absolute top-1/2 left-1/2"></span>
   ) : (
@@ -91,7 +113,10 @@ function Home() {
                 <p>{name}</p>
               </div>
             </div>
-            <div className="row-span-10 "></div>
+              <div className="row-span-10 ">
+                {loading && [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
+                {!loading && messages?.length === 0 && <p className="text-center">start your conversation by sending message</p>}
+            </div>
             <div className="w-full grid grid-cols-12 px-3 row-span-1 ">
               <div className=" col-span-2 flex items-center place-content-around">
                 <Laugh />
@@ -109,13 +134,13 @@ function Home() {
                 <input
                   type="text"
                   placeholder="Type here"
-                    className="input input-ghost w-full max-w-xs"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                  className="input input-ghost w-full max-w-xs"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                 />
               </div>
               <div className=" col-span-1 flex justify-center items-center">
-                <Send onClick={sendMessage} />
+                <Send onClick={handleSendMessage} />
               </div>
             </div>
           </div>

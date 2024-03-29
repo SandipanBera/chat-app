@@ -41,20 +41,20 @@ const getMessage = asyncHandler(async (req, res) => {
   try {
     const { id: recieverid } = req.params;
     const senderid = req.user._id;
-    const message = await Conversation.findOne({
+    const conversation = await Conversation.findOne({
       participants: { $all: [recieverid, senderid] },
     }).populate({
       path: "messages",
-      select: "-__v -senderId -receiverId ",
+      select: "-__v  ",
     });
-    if (!message) {
+    if (!conversation) {
       return res
         .status(200)
         .json(new apiResponse( "No chat available", 200,[]));
     }
     return res
       .status(200)
-      .json(new apiResponse( "Messages fetched Successfully",200, message));
+      .json(new apiResponse( "Messages fetched Successfully",200,conversation.messages));
   } catch (error) {
     console.log(error.message);
     return new apiError(500, "Internal server error");

@@ -5,8 +5,6 @@ import Navbar from "./components/navbar";
 import { useEffect, useState } from "react";
 import auth from "./api-call/authentication";
 import { authentication } from "./slice/authSlice";
-import { setUserdata } from "./slice/userSlice";
-
 function App() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -16,12 +14,13 @@ function App() {
       .then((user) => {
         setIsLoading(true);
         if (user.statusCode === 200) {
-          dispatch(authentication(true));
-          dispatch(setUserdata(user?.data));
+          dispatch(authentication(true));   
         }
+        
       })
       .finally(() => setIsLoading(false));
   }, [dispatch]);
+  
 
   return !isLoading ? (
     <div className=" min-h-screen flex flex-wrap content-between ">
