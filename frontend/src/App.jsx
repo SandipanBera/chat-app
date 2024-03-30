@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import Navbar from "./components/navbar";
@@ -7,6 +7,7 @@ import auth from "./api-call/authentication";
 import { authentication } from "./slice/authSlice";
 function App() {
   const dispatch = useDispatch();
+  const navigate=useNavigate()
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     auth
@@ -14,7 +15,10 @@ function App() {
       .then((user) => {
         setIsLoading(true);
         if (user.statusCode === 200) {
-          dispatch(authentication(true));   
+          dispatch(authentication(true));  
+          navigate("/home")
+        } else {
+          navigate("/")
         }
         
       })
