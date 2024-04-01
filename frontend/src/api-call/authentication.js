@@ -1,23 +1,20 @@
 class Authentication {
-  async registerUser(
-    {
-      fullName,
-      userName,
-      email,
-      gender,
-      password,
-      confirmPassword,
-      profileimage = "",
-    },
-    imageName = ""
-  ) {
+  async registerUser({
+    fullName,
+    userName,
+    email,
+    gender,
+    password,
+    confirmPassword,
+    profileimage = "",
+  }) {
     try {
       const formdata = new FormData();
       formdata.append("fullName", fullName);
       formdata.append("userName", userName);
       formdata.append("email", email);
       formdata.append("gender", gender);
-      formdata.append("profileImage", new File([profileimage], imageName));
+      formdata.append("profileImage", new File([profileimage], ""));
       formdata.append("password", password);
       formdata.append("confirmPassword", confirmPassword);
       const res = await (

@@ -3,7 +3,10 @@ import auth from "../api-call/authentication";
 import Container from "../components/container/container";
 import { Laugh, Paperclip, Send } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentConversation } from "../slice/conversationSlice";
+import {
+  setCurrentConversation,
+  setUploadImage,
+} from "../slice/conversationSlice";
 import Conversation from "../components/conversation";
 import useSendMessage from "../hooks/useSendMessage";
 import { Userdata } from "../slice/userSlice";
@@ -11,7 +14,7 @@ import useGetMessage from "../hooks/useGetMessage";
 import MessageSkeleton from "../components/skeletons/messageSkeleton";
 import Message from "../components/message";
 import EmojiPicker from "emoji-picker-react";
-import { EmojiStyle } from 'emoji-picker-react';
+import useHandleEmoji from "../hooks/useHandleEmoji";
 
 function Home() {
   const [users, setUsers] = useState([]);
@@ -20,10 +23,12 @@ function Home() {
   const [visible, setVisible] = useState({
     chat: false,
     emoji: false,
+    file: false,
   });
   const [message, setMessage] = useState("");
   const sendMessage = useSendMessage();
   const getMessages = useGetMessage();
+  const setEmoji = useHandleEmoji();
   const ref = useRef(null);
   const inputRef = useRef(null);
   // Dispatcher for actions
@@ -75,15 +80,7 @@ function Home() {
   };
   const handleEmoji = ({ emoji }) => {
     const input = inputRef.current;
-    if (input) {
-      const { selectionStart, selectionEnd } = input;
-    const newInputValue=  input.value.substring(0, selectionStart) +
-    emoji +
-    input.value.substring(selectionEnd);
-      setMessage(newInputValue);
-      input.focus();
-      input.setSelectionRange(selectionStart + emoji.length, selectionStart + emoji.length);
-    }
+    setEmoji(emoji, setMessage, input);
   };
   return loading ? (
     <span className="loading loading-infinity loading-lg  text-red-400 absolute top-1/2 left-1/2" />
@@ -92,7 +89,12 @@ function Home() {
       <div
         className={`fixed bottom-28 left-1/3 z-30 ${!visible.emoji && "hidden"}`}
       >
-        <EmojiPicker height={300} width={400} onEmojiClick={handleEmoji} emojiStyle="google" />
+        <EmojiPicker
+          height={300}
+          width={400}
+          onEmojiClick={handleEmoji}
+          emojiStyle="google"
+        />
       </div>
       <div className="w-full lg:w-[800px] mx-auto grid grid-cols-12 pb-3 gap-1 bg-[rgba(47,_163,_177,_0.2)] rounded-[16px] [box-shadow:0_4px_30px_rgba(0,_0,_0,_0.1)] backdrop-filter backdrop-blur-[5px] border-[1px] border-[rgba(47,163,177,0.3)] ">
         <div className="grid grid-cols-1 col-span-5 py-1 gap-2 relative">
@@ -175,6 +177,10 @@ function Home() {
                     name=""
                     id="file-input"
                     className="hidden"
+                    onChange={(e) => {
+                      setVisible({ ...visible, file: !visible.file });
+                      dispatch(setUploadImage(e.target.files[0]));
+                    }}
                   />
                 </label>
               </div>

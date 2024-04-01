@@ -3,6 +3,7 @@ import Message from "../models/message.model.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import cloudinaryUpload from "../utils/cloudinary.js";
 
 const messageHandler = asyncHandler(async (req, res) => {
   try {
@@ -21,12 +22,24 @@ const messageHandler = asyncHandler(async (req, res) => {
         participants: [senderId, receiverId],
       });
     }
+    //user's sending image upload in cloudinary and url save in database
+    const imageLocalPath = req.file?.path;
+    let sendingImage = "";
+    if (imageLocalPath) {
+      sendingImage = await cloudinaryUpload(imageLocalPath);
+      if (!sendingImage?.url) {
+        throw new apiError(500, "failed to upload image");
+      }
+    }
     const newMessage = new Message({
       senderId,
       receiverId,
       message,
+      image: sendingImage?.url || "",
+  
     });
     await newMessage.save();
+    await newMessage.save()
     conversation.messages.push(newMessage);
     await conversation.save();
     return res

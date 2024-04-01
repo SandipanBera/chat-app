@@ -24,7 +24,7 @@ function Landing() {
 
         <TypeAnimation
           sequence={[
-            "We konnekt pepole to pepole",
+            "We konnekt pepoles to pepoles",
             2000,
             "Start your journey with konnekt",
             2000,

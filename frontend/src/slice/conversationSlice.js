@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     conversation: [],
-    currentConversation: null
+    currentConversation: null,
+    uploadImage:null
 }
 const conversationSlice = createSlice({
     name: "conversations",
@@ -13,9 +14,12 @@ const conversationSlice = createSlice({
        
         setCurrentConversation: (state, action) => {
             state.currentConversation = action.payload;
-         }
+        },
+        setUploadImage: (state,action) => {
+            state.uploadImage=action.payload
+        }
 
     }
 })
-export const { setConversation,setCurrentConversation} = conversationSlice.actions
+export const { setConversation,setCurrentConversation,setUploadImage} = conversationSlice.actions
 export default conversationSlice.reducer

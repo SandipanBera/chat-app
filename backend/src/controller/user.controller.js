@@ -40,9 +40,8 @@ const registerUser = asyncHandler(async (req, res) => {
   if (existedUser) {
     throw new apiError(409, "username or email already registered");
   }
-
   const profilePicLocalPath = req.file?.path;
-  const profileImage = "";
+  let profileImage = "";
   if (profilePicLocalPath) {
     profileImage = await cloudinaryUpload(profilePicLocalPath);
     if (!profileImage?.url) {
