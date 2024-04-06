@@ -18,7 +18,7 @@ class Message {
     try {
       const formData = new FormData();
       formData.append("message", message);
-      formData.append("image", new File([image], ""));
+      formData.append("image", new File([image], "image"));
       return await (
         await fetch(`http://localhost:8080/api/v1/users/send/${id}`, {
           method: "POST",

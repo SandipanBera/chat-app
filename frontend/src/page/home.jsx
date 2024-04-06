@@ -15,6 +15,8 @@ import MessageSkeleton from "../components/skeletons/messageSkeleton";
 import Message from "../components/message";
 import EmojiPicker from "emoji-picker-react";
 import useHandleEmoji from "../hooks/useHandleEmoji";
+import FilePicker from "../components/filePicker";
+import { setIsOpen } from "../slice/componentSlice";
 
 function Home() {
   const [users, setUsers] = useState([]);
@@ -26,6 +28,7 @@ function Home() {
     file: false,
   });
   const [message, setMessage] = useState("");
+  const [image,setImage]=useState("")
   const sendMessage = useSendMessage();
   const getMessages = useGetMessage();
   const setEmoji = useHandleEmoji();
@@ -33,7 +36,8 @@ function Home() {
   const inputRef = useRef(null);
   // Dispatcher for actions
   const dispatch = useDispatch();
-  const messages = useSelector((state) => state.conversations.conversation);
+  const messages = useSelector((state) => state.conversations);
+  const isOpen = useSelector((state) => state.components.isOpen);
   useEffect(() => {
     setLoading(true);
     auth
@@ -72,6 +76,7 @@ function Home() {
     setLoading(false);
   };
   const handleSendMessage = () => {
+    console.log(messages.uploadImage);
     if (!message) {
       return;
     }
@@ -79,15 +84,16 @@ function Home() {
     setMessage("");
   };
   const handleEmoji = ({ emoji }) => {
-    const input = inputRef.current;
-    setEmoji(emoji, setMessage, input);
+    setEmoji(emoji, setMessage, inputRef.current);
   };
   return loading ? (
     <span className="loading loading-infinity loading-lg  text-red-400 absolute top-1/2 left-1/2" />
   ) : (
     <Container className="relative">
+        <FilePicker className={`bottom-32 left-1/3 ${!isOpen && "hidden"}`} image={image} setImage={setImage } />
+
       <div
-        className={`fixed bottom-28 left-1/3 z-30 ${!visible.emoji && "hidden"}`}
+        className={`fixed bottom-32 left-1/3 z-30 ${!visible.emoji && "hidden"}`}
       >
         <EmojiPicker
           height={300}
@@ -150,14 +156,14 @@ function Home() {
             <div className="row-span-10 h-[460px] overflow-auto px-2 chat-scroll ">
               {loading &&
                 [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
-              {!loading && messages?.length === 0 && (
+              {!loading && messages?.conversation?.length === 0 && (
                 <p className="text-center">
                   start your conversation by sending message
                 </p>
               )}
               {!loading &&
-                messages?.length !== 0 &&
-                messages.map((message) => (
+                messages?.conversation?.length !== 0 &&
+                messages?.conversation?.map((message) => (
                   <div key={message._id} ref={ref}>
                     <Message message={message} />
                   </div>
@@ -178,8 +184,16 @@ function Home() {
                     id="file-input"
                     className="hidden"
                     onChange={(e) => {
-                      setVisible({ ...visible, file: !visible.file });
-                      dispatch(setUploadImage(e.target.files[0]));
+                      dispatch(setIsOpen(true));
+                      setImage(e.target.files[0])
+                      dispatch(
+                        setUploadImage({
+                          url: URL.createObjectURL(e.target.files[0]),
+                          name: e.target.files[0].name,
+                         
+                        })
+                      );
+                      e.target.value = "";
                     }}
                   />
                 </label>
