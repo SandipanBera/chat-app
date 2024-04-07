@@ -28,7 +28,7 @@ function Home() {
     file: false,
   });
   const [message, setMessage] = useState("");
-  const [image,setImage]=useState("")
+  const [image, setImage] = useState("");
   const sendMessage = useSendMessage();
   const getMessages = useGetMessage();
   const setEmoji = useHandleEmoji();
@@ -89,8 +89,12 @@ function Home() {
   return loading ? (
     <span className="loading loading-infinity loading-lg  text-red-400 absolute top-1/2 left-1/2" />
   ) : (
-    <Container className="relative">
-        <FilePicker className={`bottom-32 left-1/3 ${!isOpen && "hidden"}`} image={image} setImage={setImage } />
+    <Container className="relative min-h-screen flex justify-center items-center mt-5 pt-12">
+      <FilePicker
+        className={`bottom-32 left-1/3 ${!isOpen && "hidden"}`}
+        image={image}
+        setImage={setImage}
+      />
 
       <div
         className={`fixed bottom-32 left-1/3 z-30 ${!visible.emoji && "hidden"}`}
@@ -102,7 +106,7 @@ function Home() {
           emojiStyle="google"
         />
       </div>
-      <div className="w-full lg:w-[800px] mx-auto grid grid-cols-12 pb-3 gap-1 bg-[rgba(47,_163,_177,_0.2)] rounded-[16px] [box-shadow:0_4px_30px_rgba(0,_0,_0,_0.1)] backdrop-filter backdrop-blur-[5px] border-[1px] border-[rgba(47,163,177,0.3)] ">
+      <div className="w-full lg:w-[800px] mx-auto grid grid-cols-12 pb-3  gap-1 bg-[rgba(47,_163,_177,_0.2)] rounded-[16px] [box-shadow:0_4px_30px_rgba(0,_0,_0,_0.1)] backdrop-filter backdrop-blur-[5px] border-[1px] border-[rgba(47,163,177,0.3)] ">
         <div className="grid grid-cols-1 col-span-5 py-1 gap-2 relative">
           <div className="grid grid-cols-1 gap-2 px-3">
             <div>
@@ -182,15 +186,15 @@ function Home() {
                     type="file"
                     name=""
                     id="file-input"
+                    accept="image/png, image/gif, image/jpeg"
                     className="hidden"
                     onChange={(e) => {
                       dispatch(setIsOpen(true));
-                      setImage(e.target.files[0])
+                      setImage(e.target.files[0]);
                       dispatch(
                         setUploadImage({
                           url: URL.createObjectURL(e.target.files[0]),
                           name: e.target.files[0].name,
-                         
                         })
                       );
                       e.target.value = "";
@@ -201,7 +205,7 @@ function Home() {
               <div className=" col-span-9">
                 <input
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type a message..."
                   className="input input-ghost w-full max-w-xs"
                   ref={inputRef}
                   value={message}

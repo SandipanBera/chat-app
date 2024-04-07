@@ -10,7 +10,10 @@ function Conversation({ user, clickHandler }) {
     >
       <div className="col-span-8 grid grid-cols-12 gap-2 ">
         <div className="col-span-4">
-          <img src={user.profileImage.url} alt="profile image" className="w-14 h-14 rounded-full"/>
+          <div className="avatar online">
+             <img src={user.profileImage.url} alt="profile image" className="w-14 h-14 rounded-full"/>
+          </div>
+         
         </div>
         <div className="col-span-8 grid grid-cols-1 gap-1">
           <div>{user.userName}</div>

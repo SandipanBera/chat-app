@@ -1,6 +1,6 @@
 import connectDB from "./db//index.js";
 import dotenv from "dotenv";
-import app  from "./app.js";
+import httpServer from "./socket/socket.js";
 // Load environment variables from .env file if it exists.
 
 dotenv.config(
@@ -14,7 +14,7 @@ connectDB()
    * @returns {void}
    */
   .then(() => {
-    app.listen(process.env.PORT || 4000, () =>
+    httpServer.listen(process.env.PORT || 4000, () =>
       console.log("Server started on port " + process.env.PORT)
     );
 
@@ -24,7 +24,7 @@ connectDB()
      * @param {Error} error - The error object emitted by the app.
      * @returns {void}
      */
-    app.on("error", (error) => {
+    httpServer.on("error", (error) => {
       console.log("database not connected", error);
       throw error;
     });

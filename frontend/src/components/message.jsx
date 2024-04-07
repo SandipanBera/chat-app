@@ -18,7 +18,7 @@ function Message({message}) {
     <div className="chat-header">
       {fromMe?receiver?.userName:sender?.userName}
     </div>
-      <div className={`chat-bubble ${fromMe && "bg-sky-500 text-slate-50"} py-3`}>
+      <div className={`chat-bubble ${fromMe && "bg-sky-500 text-slate-50"} py-3 flex flex-col gap-1`}>
         {message?.image && <div className="indicator">
           <span className="indicator-item badge badge-secondary h-6 w-6 bg-slate-300 opacity-50  border-transparent">
             <a href={message.image} download> <CircleArrowDown size={20} color="#757575"/></a>

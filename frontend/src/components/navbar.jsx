@@ -22,7 +22,7 @@ function Navbar() {
     });
   };
   return (
-    <div className=" navbar bg-base-100 ">
+    <div className=" navbar bg-base-100 fixed z-30 ">
       <div className="flex-1 gap-0 sm:gap-1">
         <div className="w-8 sm:w-14 rounded-full overflow-hidden">
           <img src="/logo.jpg" alt="" />

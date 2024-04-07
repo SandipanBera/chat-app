@@ -33,7 +33,7 @@ function SignIn() {
       });
   };
   return (
-    <div className="flex justify-center items-center min-h-screen  m-4">
+    <div className="flex justify-center items-center min-h-screen  mx-4">
        <section className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4  bg-[rgba(47,_163,_177,_0.2)] rounded-[16px] [box-shadow:0_4px_30px_rgba(0,_0,_0,_0.1)] backdrop-filter backdrop-blur-[5px] border-[1px] border-[rgba(47,163,177,0.3)]">
       <div className="flex items-center justify-center px-6 py-10 sm:px-6 sm:py-10 lg:px-8 lg:py-10 ">
         <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md w-full">
