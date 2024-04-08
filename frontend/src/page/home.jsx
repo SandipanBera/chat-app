@@ -130,8 +130,8 @@ function Home() {
               </label>
             </div>
           </div>
-          <div className="">
-            <ul className="flex flex-col gap-2 px-3 h-[480px] overflow-auto chat-scroll">
+   
+            <ul className="flex flex-col gap-2 px-3  h-[480px] overflow-auto chat-scroll">
               {users.map((user) => (
                 <Conversation
                   key={user._id}
@@ -140,7 +140,7 @@ function Home() {
                 />
               ))}
             </ul>
-          </div>
+    
         </div>
         <div className=" col-span-7 border-l border-cyan-200 ">
           <div className={`${visible.chat ? "grid" : "hidden"} grid-rows-12 `}>

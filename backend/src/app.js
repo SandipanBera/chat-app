@@ -1,8 +1,7 @@
-import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import express from "express";
 const app = express();
-
 // Enable CORS with specified origin and credentials
 app.use(
   cors({
@@ -26,5 +25,7 @@ app.use(cookieParser());
 import userRouter from "./routes/user.routes.js";
 app.use("/api/v1/users", userRouter);
 import messageRouter from "./routes/message.routes.js";
-app.use("/api/v1/users",messageRouter)
-export default app;
+app.use("/api/v1/users", messageRouter)
+export default app
+
+

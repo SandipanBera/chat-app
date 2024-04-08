@@ -5,6 +5,7 @@ import Navbar from "./components/navbar";
 import { useEffect, useState } from "react";
 import auth from "./api-call/authentication";
 import { authentication } from "./slice/authSlice";
+import SocketProvider from "./socket/socket";
 function App() {
   const dispatch = useDispatch();
   const navigate=useNavigate()
@@ -27,13 +28,18 @@ function App() {
   
 
   return !isLoading ? (
-    <div className=" min-h-screen flex flex-wrap content-between ">
+<SocketProvider>
+       <div className=" min-h-screen flex flex-wrap content-between ">
       <div className="w-full block">
         <Navbar />
         <Outlet />
         <Toaster />
       </div>
-    </div>
+    </div>  
+</SocketProvider>
+    
+
+   
   ) : null;
 }
 
