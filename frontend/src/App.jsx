@@ -8,38 +8,34 @@ import { authentication } from "./slice/authSlice";
 import SocketProvider from "./socket/socket";
 function App() {
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  console.log("hello");
   useEffect(() => {
     auth
       .currentUser()
       .then((user) => {
         setIsLoading(true);
         if (user.statusCode === 200) {
-          dispatch(authentication(true));  
-          navigate("/home")
+          dispatch(authentication(true));
+          navigate("/home");
         } else {
-          navigate("/")
+          navigate("/");
         }
-        
       })
       .finally(() => setIsLoading(false));
-  }, [dispatch,navigate]);
-  
+  }, [dispatch, navigate]);
 
   return !isLoading ? (
-<SocketProvider>
-       <div className=" min-h-screen flex flex-wrap content-between ">
-      <div className="w-full block">
-        <Navbar />
-        <Outlet />
-        <Toaster />
+    <SocketProvider>
+      <div className=" min-h-screen flex flex-wrap content-between ">
+        <div className="w-full block">
+          <Navbar />
+          <Outlet />
+          <Toaster />
+        </div>
       </div>
-    </div>  
-</SocketProvider>
-    
-
-   
+    </SocketProvider>
   ) : null;
 }
 

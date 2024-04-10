@@ -11,11 +11,7 @@ function FilePicker({ className = "", ...props }) {
   const dispatch=useDispatch()
   const handleMessage=useSendMessage()
   const handleClick = () => {
-    console.log(props.image);
-    if (!props.image) { 
-      return
-    }
-    handleMessage(message, props.image)
+    handleMessage(message, props.image,image.name)
     props.setImage("")
     setMessage("");
     dispatch(setIsOpen(false))

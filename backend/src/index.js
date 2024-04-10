@@ -1,9 +1,7 @@
 import connectDB from "./db//index.js";
 import dotenv from "dotenv";
 import httpServer from "./socket/socket.js";
-import app from "./app.js";
 // Load environment variables from .env file if it exists.
-
 dotenv.config(
   // Specify the path to .env file.
   { path: "./.env" }
@@ -24,7 +22,7 @@ connectDB()
      * @param {Error} error - The error object emitted by the app.
      * @returns {void}
      */
-    app.on("error", (error) => {
+    httpServer.on("error", (error) => {
       console.log("database not connected", error);
       throw error;
     });

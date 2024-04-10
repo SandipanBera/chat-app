@@ -27,5 +27,3 @@ app.use("/api/v1/users", userRouter);
 import messageRouter from "./routes/message.routes.js";
 app.use("/api/v1/users", messageRouter)
 export default app
-
-

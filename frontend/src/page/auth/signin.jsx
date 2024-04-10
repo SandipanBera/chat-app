@@ -18,11 +18,13 @@ function SignIn() {
     auth
       .signIn(data)
       .then((response) => {
+
         if (response.statusCode !== 200) {
           toast.error("Invalid email or password");
-          console.log(response.message);
         } else {
           dispatch(authentication(true));
+          //after successfull login userid store in localstorage
+          localStorage.setItem("userId",response.data._id)
           toast.success("Signed in successfully");
           // Redirecting user to main page after successful login
           navigate("/home");

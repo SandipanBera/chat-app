@@ -15,9 +15,9 @@ const userSlice = createSlice({
             state.socket=action.payload;
         },
         addIsOnline: (state, action) => {
-            state.isOnline.push(action.payload);
+            state.isOnline= [...action.payload]
          }
     }
 })
-export const { Userdata,addSocket  } = userSlice.actions
+export const { Userdata,addSocket,addIsOnline  } = userSlice.actions
 export default userSlice.reducer

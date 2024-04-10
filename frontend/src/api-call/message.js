@@ -14,11 +14,11 @@ class Message {
       console.log(error);
     }
   }
-  async sendMessage(id, message, image = "") {
+  async sendMessage(id, message, image = "",imageName="") {
     try {
       const formData = new FormData();
       formData.append("message", message);
-      formData.append("image", new File([image], "image"));
+      formData.append("image", new File([image], imageName));
       return await (
         await fetch(`http://localhost:8080/api/v1/users/send/${id}`, {
           method: "POST",

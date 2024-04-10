@@ -12,6 +12,8 @@ function Navbar() {
   const handleLogout = () => {
     auth.logout().then((response) => {
       if (response?.statusCode === 200) {
+        // after successfull logout clear the local storage and update redux store with empty object
+        localStorage.removeItem("userId")
         dispatch(authentication(false));
         dispatch(Userdata(null));
         toast.success(response.message);

@@ -76,10 +76,6 @@ function Home() {
     setLoading(false);
   };
   const handleSendMessage = () => {
-    console.log(messages.uploadImage);
-    if (!message) {
-      return;
-    }
     sendMessage(message);
     setMessage("");
   };
