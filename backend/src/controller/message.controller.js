@@ -1,5 +1,6 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+import { getClientIdFromUserInRoomObject, io } from "../socket/socket.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -37,11 +38,17 @@ const messageHandler = asyncHandler(async (req, res) => {
       receiverId,
       message,
       image: sendingImage?.url || "",
-  
     });
-    await newMessage.save();
+ 
     conversation.messages.push(newMessage);
-    await conversation.save();
+  
+    await Promise.all([newMessage.save(), conversation.save()]);
+    //send message to specific client using socket io function
+    const socketIoClientId = getClientIdFromUserInRoomObject(receiverId)
+    if (socketIoClientId) {
+      io.to(socketIoClientId).emit("getMessage",newMessage)
+    }
+
     return res
       .status(200)
       .json(new apiResponse("Message successfully delivered", 200, newMessage));
@@ -63,11 +70,17 @@ const getMessage = asyncHandler(async (req, res) => {
     if (!conversation) {
       return res
         .status(200)
-        .json(new apiResponse( "No chat available", 200,[]));
+        .json(new apiResponse("No chat available", 200, []));
     }
     return res
       .status(200)
-      .json(new apiResponse( "Messages fetched Successfully",200,conversation.messages));
+      .json(
+        new apiResponse(
+          "Messages fetched Successfully",
+          200,
+          conversation.messages
+        )
+      );
   } catch (error) {
     console.log(error.message);
     return new apiError(500, "Internal server error");

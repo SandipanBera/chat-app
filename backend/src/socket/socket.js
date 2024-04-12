@@ -4,13 +4,17 @@ import app from "../app.js";
 
 const httpServer = createServer(app);
 // create new socket io server instance attached to the http server
-const io = new Server(httpServer, {
+export const io = new Server(httpServer, {
   cors: {
     origin: [process.env.CORS_ORIGIN],
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
+// function for retrive client id from userInRoom object
+export function getClientIdFromUserInRoomObject(receiverId) {
+  return usersInRoom[receiverId]
+}
 let usersInRoom = {}; // keeps track of all users in a room
 // when a user connected to the server
 io.on("connection", (socket) => {

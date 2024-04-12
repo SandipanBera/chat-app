@@ -9,8 +9,12 @@ const conversationSlice = createSlice({
     initialState,
     reducers: {
         setConversation: (state, action) => {
-            state.conversation=[...action.payload];
+            state.conversation=[...state.conversation,...action.payload];
         },
+        //set new message to the last of messages array  
+        setNewMessage: (state, action) => {
+            state.conversation.push(action.payload); 
+         } , 
        
         setCurrentConversation: (state, action) => {
             state.currentConversation = action.payload;
@@ -21,5 +25,5 @@ const conversationSlice = createSlice({
 
     }
 })
-export const { setConversation,setCurrentConversation,setUploadImage} = conversationSlice.actions
+export const { setConversation,setNewMessage,setCurrentConversation,setUploadImage} = conversationSlice.actions
 export default conversationSlice.reducer

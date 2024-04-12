@@ -85,7 +85,7 @@ function Home() {
   return loading ? (
     <span className="loading loading-infinity loading-lg  text-red-400 absolute top-1/2 left-1/2" />
   ) : (
-    <Container className="relative min-h-screen flex justify-center items-center mt-5 pt-12">
+    <Container className="relative min-h-screen flex justify-center items-center pt-12 ">
       <FilePicker
         className={`bottom-32 left-1/3 ${!isOpen && "hidden"}`}
         image={image}
@@ -126,17 +126,16 @@ function Home() {
               </label>
             </div>
           </div>
-   
-            <ul className="flex flex-col gap-2 px-3  h-[480px] overflow-auto chat-scroll">
-              {users.map((user) => (
-                <Conversation
-                  key={user._id}
-                  user={user}
-                  clickHandler={clickHandler}
-                />
-              ))}
-            </ul>
-    
+
+          <ul className="flex flex-col gap-2 px-3  h-[480px] overflow-auto chat-scroll">
+            {users.map((user) => (
+              <Conversation
+                key={user._id}
+                user={user}
+                clickHandler={clickHandler}
+              />
+            ))}
+          </ul>
         </div>
         <div className=" col-span-7 border-l border-cyan-200 ">
           <div className={`${visible.chat ? "grid" : "hidden"} grid-rows-12 `}>
@@ -145,11 +144,12 @@ function Home() {
 "
             >
               <div className="w-1/3 flex flex-row items-center gap-2 px-2 py-1 ">
-                <img
-                  src={userData?.profileImage?.url}
-                  alt="profile-pic"
-                  className="w-10 h-10 rounded-full"
-                />
+                <div className="avatar">
+                  <div className="w-10 rounded-full">
+                    <img src={userData?.profileImage?.url} />
+                  </div>
+                </div>
+
                 <p className="text-lg italic">{userData?.userName}</p>
               </div>
             </div>

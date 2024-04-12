@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
 import { addIsOnline, addSocket } from "../slice/userSlice";
+import { setConversation, setNewMessage } from "../slice/conversationSlice";
 function SocketProvider({ children }) {
-  const [socket, setSocket] = useState(null);
   const auth=useSelector((state)=>state.user.userData)
   const dispatch = useDispatch();
   useEffect(() => {
@@ -17,18 +17,23 @@ function SocketProvider({ children }) {
           userId:localStorage.getItem('userId'),
         }
       });
-      setSocket(socket);
-      //dispatch socket for further use in other components.
+  
+      //add the connected socket to the redux store.
+      // dispatch(addSocket({ ...socket }));
       socket.on("connect", () => {
         console.log("Connected to server");
       });
       socket.on("getOnlineUser", (onlineUsers) => {
         dispatch(addIsOnline(onlineUsers))
       });
+      socket.on("getMessage", (newMessage) => {
+        dispatch(setNewMessage(newMessage))
+        const notificationSound = new Audio('/notification.mp3');
+        notificationSound.play();
+      })
       return () => {
         //after component unmounted remove listener and disconnect from the server.
         socket.disconnect();
-        setSocket(null);
       };
     }
   }, [auth, dispatch]);
