@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon -r dotenv/config backend/src/index.js",
-    "build":"npm install && npm install --prefix frontend ",
+    "build":"npm install && npm install --prefix frontend && npm run build --prefix frontend",
     "start":"node backend/src/index.js"
   },
   "keywords": [],
