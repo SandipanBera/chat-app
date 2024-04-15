@@ -1,18 +1,22 @@
 import connectDB from "./db//index.js";
 import dotenv from "dotenv";
 import path from "path";
-import express from "express"
-import {httpServer,app} from "./socket/socket.js";
+import express from "express";
+import { httpServer, app } from "./socket/socket.js";
 // Load environment variables from .env file if it exists.
 dotenv.config(
   // Specify the path to .env file.
   { path: "./.env" }
 );
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "/frontend/dist")));
-app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
-);
+/--------------Deployment-----------------/;
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+  app.get("*", (_, res) =>
+    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
+  );
+}
+/--------------Deployment-----------------/;
 connectDB()
   /**
    * Starts the server and listens on the specified port.
