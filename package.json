@@ -5,7 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config backend/src/index.js"
+    "dev": "nodemon -r dotenv/config backend/src/index.js",
+    "build":"npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "start":"node -r dotenv/config backend/src/index.js"
   },
   "keywords": [],
   "author": "sandipan bera",

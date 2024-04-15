@@ -27,7 +27,6 @@ const messageHandler = asyncHandler(async (req, res) => {
     const imageLocalPath = req.file?.path;
     let sendingImage = "";
     if (imageLocalPath) {
-      console.log(imageLocalPath);
       sendingImage = await cloudinaryUpload(imageLocalPath);
       if (!sendingImage?.url) {
         throw new apiError(500, "failed to upload image");

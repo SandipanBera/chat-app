@@ -9,7 +9,7 @@ const conversationSlice = createSlice({
     initialState,
     reducers: {
         setConversation: (state, action) => {
-            state.conversation=[...state.conversation,...action.payload];
+            state.conversation=[...action.payload];
         },
         //set new message to the last of messages array  
         setNewMessage: (state, action) => {

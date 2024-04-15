@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 function Conversation({ user, clickHandler }) {
   const conversation = useSelector((state) => state.conversations);
-  const selected = user._id === conversation.currentConversation;
+  const selected = user._id === conversation?.currentConversation?._id;
   const isOnline = useSelector((state) => state.user.isOnline);
   return (
     <li

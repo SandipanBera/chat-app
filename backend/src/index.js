@@ -1,10 +1,17 @@
 import connectDB from "./db//index.js";
 import dotenv from "dotenv";
-import httpServer from "./socket/socket.js";
+import path from "path";
+import express from "express"
+import {httpServer,app} from "./socket/socket.js";
 // Load environment variables from .env file if it exists.
 dotenv.config(
   // Specify the path to .env file.
   { path: "./.env" }
+);
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
 );
 connectDB()
   /**

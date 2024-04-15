@@ -8,11 +8,12 @@ function useHandleEmoji() {
         input.value.substring(selectionEnd);
       setMessage(newInputValue);
       input.focus();
+      //Moves cursor at the end of the input
       input.setSelectionRange(
         selectionStart + emoji.length,
         selectionStart + emoji.length
       );
-      //Moves cursor at the end of the input
+      
     }
   };
   return insertEmoji;

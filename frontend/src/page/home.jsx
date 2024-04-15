@@ -17,6 +17,7 @@ import EmojiPicker from "emoji-picker-react";
 import useHandleEmoji from "../hooks/useHandleEmoji";
 import FilePicker from "../components/filePicker";
 import { setIsOpen } from "../slice/componentSlice";
+import useDebouce from "../hooks/useDebouce";
 
 function Home() {
   const [users, setUsers] = useState([]);
@@ -28,10 +29,12 @@ function Home() {
     file: false,
   });
   const [message, setMessage] = useState("");
+  const [query, setQuery] = useState("");
   const [image, setImage] = useState("");
   const sendMessage = useSendMessage();
   const getMessages = useGetMessage();
   const setEmoji = useHandleEmoji();
+  const searchTerm = useDebouce(query);
   const ref = useRef(null);
   const inputRef = useRef(null);
   // Dispatcher for actions
@@ -110,7 +113,7 @@ function Home() {
             </div>
             <div>
               <label className="input bg-transparent border-b border-b-cyan-300 rounded-b-none input-bordered flex items-center gap-2">
-                <input type="text" className="grow" placeholder="Search" />
+                <input type="text" className="grow" placeholder="Search" value={query} onChange={(e)=>setQuery(e.target.value)} />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 16 16"
@@ -128,13 +131,20 @@ function Home() {
           </div>
 
           <ul className="flex flex-col gap-2 px-3  h-[480px] overflow-auto chat-scroll">
-            {users.map((user) => (
-              <Conversation
-                key={user._id}
-                user={user}
-                clickHandler={clickHandler}
-              />
-            ))}
+            {users
+              .filter((user) =>
+                user.userName
+                  .trim()
+                  .toLowerCase()
+                  .includes(searchTerm.trim().toLowerCase())
+              )
+              .map((user) => (
+                <Conversation
+                  key={user._id}
+                  user={user}
+                  clickHandler={clickHandler}
+                />
+              ))}
           </ul>
         </div>
         <div className=" col-span-7 border-l border-cyan-200 ">

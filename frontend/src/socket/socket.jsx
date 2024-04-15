@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
-import { addIsOnline, addSocket } from "../slice/userSlice";
-import { setConversation, setNewMessage } from "../slice/conversationSlice";
+import { addIsOnline} from "../slice/userSlice";
+import { setNewMessage } from "../slice/conversationSlice";
 function SocketProvider({ children }) {
   const auth=useSelector((state)=>state.user.userData)
   const dispatch = useDispatch();
@@ -18,8 +18,6 @@ function SocketProvider({ children }) {
         }
       });
   
-      //add the connected socket to the redux store.
-      // dispatch(addSocket({ ...socket }));
       socket.on("connect", () => {
         console.log("Connected to server");
       });
@@ -34,6 +32,7 @@ function SocketProvider({ children }) {
       return () => {
         //after component unmounted remove listener and disconnect from the server.
         socket.disconnect();
+        socket.off(["getOnlineUser","getMessage"]);
       };
     }
   }, [auth, dispatch]);

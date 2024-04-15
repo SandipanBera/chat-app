@@ -1,10 +1,10 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-import app from "../app.js";
-
+import express from "express";
+const app = express();
 const httpServer = createServer(app);
 // create new socket io server instance attached to the http server
-export const io = new Server(httpServer, {
+ const io = new Server(httpServer, {
   cors: {
     origin: [process.env.CORS_ORIGIN],
     methods: ["GET", "POST"],
@@ -12,7 +12,7 @@ export const io = new Server(httpServer, {
   },
 });
 // function for retrive client id from userInRoom object
-export function getClientIdFromUserInRoomObject(receiverId) {
+ function getClientIdFromUserInRoomObject(receiverId) {
   return usersInRoom[receiverId]
 }
 let usersInRoom = {}; // keeps track of all users in a room
@@ -34,4 +34,4 @@ io.on("connection", (socket) => {
   });
 });
 
-export default httpServer;
+export {httpServer,app,io,getClientIdFromUserInRoomObject};
