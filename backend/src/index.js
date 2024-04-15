@@ -9,11 +9,13 @@ dotenv.config(
   { path: "./.env" }
 );
 /--------------Deployment-----------------/;
-  const __dirname = path.resolve();
+if (process.env.NODE_ENV==="production") {
+    const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
   app.get("*", (_, res) =>
     res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
   );
+}
 /--------------Deployment-----------------/;
 connectDB()
   /**
