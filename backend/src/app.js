@@ -1,11 +1,12 @@
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { app } from "./socket/socket.js";
+import express from "express";
+const app = express();
 // Enable CORS with specified origin and credentials
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
-    credentials: true,
+    credentials:true
   })
 );
 
@@ -25,4 +26,5 @@ app.use("/api/v1/users", userRouter);
 // Import message routes
 import messageRouter from "./routes/message.routes.js";
 app.use("/api/v1/users", messageRouter);
+export default app
 

@@ -41,7 +41,7 @@ class Authentication {
       return await (
         await fetch("http://localhost:8080/api/v1/users/signin", {
           method: "POST",
-          credentials: "include",
+          credentials: "include",  
           headers: {
             accept: "application/json",
             "Content-Type": "application/json",

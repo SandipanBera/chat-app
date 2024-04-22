@@ -10,8 +10,8 @@ function SocketProvider({ children }) {
     //connect to the server if user is authenticated.
     if (auth) {
       // Connect to the socket server with credentials.
-      const socket = io("https://chat-app-bgqi.onrender.com", {
-        withCredentials: true,
+      const socket = io("http://localhost:8080", {
+        withCredentials:true,
         query: {
           //get userid from localstorage and pass it to the server as a parameter.
           userId:localStorage.getItem('userId'),

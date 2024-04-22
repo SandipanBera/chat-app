@@ -10,7 +10,6 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  console.log("hello");
   useEffect(() => {
     auth
       .currentUser()

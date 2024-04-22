@@ -43,10 +43,10 @@ function SignIn() {
                <h2 className="text-center inline-block text-base sm:text-2xl font-bold leading-tight text-black">
             Sign In to
           </h2>
-          &nbsp;<span className=" text-lg sm:text-2xl font-bold leading-tight text-slate-600"> Konnekt</span>
+          &nbsp;<span className=" text-lg sm:text-2xl font-bold leading-tight text-slate-200"> Konnekt</span>
           </div>
      
-          <p className="mt-2 text-center text-base text-slate-600">
+          <p className="mt-2 text-center text-base text-slate-200">
             Don&apos;t have an account?{" "}
             <Link
               to={"/sign-up"}

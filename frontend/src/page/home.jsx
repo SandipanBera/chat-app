@@ -105,7 +105,7 @@ function Home() {
           emojiStyle="google"
         />
       </div>
-      <div className="w-full lg:w-[800px] mx-auto grid grid-cols-12 pb-3  gap-1 bg-[rgba(47,_163,_177,_0.2)] rounded-[16px] [box-shadow:0_4px_30px_rgba(0,_0,_0,_0.1)] backdrop-filter backdrop-blur-[5px] border-[1px] border-[rgba(47,163,177,0.3)] ">
+      <div className="w-full lg:w-[1000px] mx-auto grid grid-cols-12 pb-3  gap-1 bg-[rgba(47,_163,_177,_0.2)] rounded-[16px] [box-shadow:0_4px_30px_rgba(0,_0,_0,_0.1)] backdrop-filter backdrop-blur-[5px] border-[1px] border-[rgba(47,163,177,0.3)] ">
         <div className="grid grid-cols-1 col-span-5 py-1 gap-2 relative">
           <div className="grid grid-cols-1 gap-2 px-3">
             <div>
@@ -130,7 +130,7 @@ function Home() {
             </div>
           </div>
 
-          <ul className="flex flex-col gap-2 px-3  h-[480px] overflow-auto chat-scroll">
+          <ul className="flex flex-col gap-2 px-3 h-[480px] overflow-auto chat-scroll">
             {users
               .filter((user) =>
                 user.userName

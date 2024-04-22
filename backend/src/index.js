@@ -2,7 +2,8 @@ import connectDB from "./db/index.js";
 import dotenv from "dotenv";
 import path from "path";
 import express from "express";
-import { httpServer, app } from "./socket/socket.js";
+ import { httpServer } from "./socket/socket.js";
+import app from "./app.js";
 // Load environment variables from .env file if it exists.
 dotenv.config(
   // Specify the path to .env file.
@@ -23,7 +24,7 @@ connectDB()
    * If the `process.env.PORT` variable is not set, the server will listen on port 4000.
    */
   .then(() => {
-    httpServer.listen(process.env.PORT || 4000, () =>
+   httpServer.listen(process.env.PORT || 4000, () =>
       console.log("Server started on port " + process.env.PORT)
     );
 
