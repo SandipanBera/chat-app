@@ -2,7 +2,7 @@ class Message {
   async getMessage(id) {
     try {
       return await (
-        await fetch(`http://localhost:8080/api/v1/users/getMessage/${id}`, {
+        await fetch(`api/v1/users/getMessage/${id}`, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -20,7 +20,7 @@ class Message {
       formData.append("message", message);
       formData.append("image", new File([image], imageName));
       return await (
-        await fetch(`http://localhost:8080/api/v1/users/send/${id}`, {
+        await fetch(`/api/v1/users/send/${id}`, {
           method: "POST",
           credentials: "include",
           headers: {

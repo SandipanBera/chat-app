@@ -10,7 +10,7 @@ function SocketProvider({ children }) {
     //connect to the server if user is authenticated.
     if (auth) {
       // Connect to the socket server with credentials.
-      const socket = io("https://chat-app-bgqi.onrender.com", {
+      const socket = io("https://chat-app-a75d.onrender.com", {
         withCredentials:true,
         query: {
           //get userid from localstorage and pass it to the server as a parameter.
