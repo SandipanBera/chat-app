@@ -2,7 +2,7 @@ class Message {
   async getMessage(id) {
     try {
       return await (
-        await fetch(`api/v1/users/getMessage/${id}`, {
+        await fetch(`/api/v1/users/getMessage/${id}`, {
           method: "GET",
           credentials: "include",
           headers: {

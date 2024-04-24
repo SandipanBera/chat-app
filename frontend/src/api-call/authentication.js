@@ -39,7 +39,7 @@ class Authentication {
   async signIn({ username, password }) {
     try {
       return await (
-        await fetch("api/v1/users/signin", {
+        await fetch("/api/v1/users/signin", {
           method: "POST",
           credentials: "include",  
           headers: {
@@ -56,7 +56,7 @@ class Authentication {
   async logout() {
     try {
       return await (
-        await fetch("api/v1/users/signout", {
+        await fetch("/api/v1/users/signout", {
           method: "POST",
           credentials: "include",
           headers: {
@@ -72,7 +72,7 @@ class Authentication {
   async currentUser() {
     try {
       return await (
-        await fetch("api/v1/users/currentUser", {
+        await fetch("/api/v1/users/currentUser", {
           method: "GET",
           credentials: "include",
           headers: {
@@ -88,7 +88,7 @@ class Authentication {
   async getAllUser() {
     try {
       return await (
-        await fetch("api/v1/users", {
+        await fetch("/api/v1/users", {
           method: "GET",
           credentials: "include",
           headers: {
