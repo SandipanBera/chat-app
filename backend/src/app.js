@@ -9,7 +9,6 @@ app.use(
     credentials:true
   })
 );
-
 // Parse JSON requests with a limit of 10kb
 app.use(express.json({ limit: "10kb" }));
 
@@ -27,4 +26,6 @@ app.use("/api/v1/users", userRouter);
 import messageRouter from "./routes/message.routes.js";
 app.use("/api/v1/users", messageRouter);
 export default app
+
+
 

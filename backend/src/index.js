@@ -2,7 +2,7 @@ import connectDB from "./db/index.js";
 import dotenv from "dotenv";
 import path from "path";
 import express from "express";
- import { httpServer } from "./socket/socket.js";
+import { httpServer } from "./socket/socket.js";
 import app from "./app.js";
 // Load environment variables from .env file if it exists.
 dotenv.config(

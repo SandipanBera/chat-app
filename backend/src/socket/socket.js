@@ -1,8 +1,8 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
 import app from "../app.js";
-import express from "express";
-// const app = express();
+
+
 const httpServer = createServer(app);
 // create new socket io server instance attached to the http server
 const io = new Server(httpServer, {
@@ -11,6 +11,7 @@ const io = new Server(httpServer, {
     credentials: true,
   },
 });
+
 // function for retrive client id from userInRoom object
 function getClientIdFromUserInRoomObject(receiverId) {
   return usersInRoom[receiverId];
@@ -33,4 +34,4 @@ io.on("connection", (socket) => {
     io.emit("getOnlineUser", Object.keys(usersInRoom));
   });
 });
-export { httpServer, io, getClientIdFromUserInRoomObject};
+export {httpServer, io, getClientIdFromUserInRoomObject};
